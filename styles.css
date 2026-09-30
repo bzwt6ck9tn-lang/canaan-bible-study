@@ -389,6 +389,34 @@ body.leader-mode .leader-only {
   flex-shrink: 0;
 }
 
+.micro-note {
+  display: block;
+  width: calc(100% - 1.75rem);
+  margin: 0.45rem 0 0 1.75rem;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.micro-note:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.18);
+}
+
+.micro-note::placeholder {
+  color: #b0a698;
+}
+
+textarea.micro-note {
+  resize: vertical;
+}
+
 .outline-list {
   margin: 0;
   padding-left: 1.25rem;

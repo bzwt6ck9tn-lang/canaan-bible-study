@@ -7,7 +7,9 @@
     "obs1", "obs2", "obs3", "obs4", "obs5",
     "exp1", "exp2", "exp3", "exp4", "exp5",
     "takeaway",
-    "micro1", "micro2", "micro3"
+    "micro1", "micro1Notes",
+    "micro2", "micro2Notes",
+    "micro3", "micro3Notes"
   ];
 
   function $(id) {
@@ -64,7 +66,7 @@
   }
 
   function clearAnswers() {
-    if (!confirm("確定清除本裝置上的全部答案與微行動勾選？")) return;
+    if (!confirm("確定清除本裝置上的全部答案、微行動勾選與填寫記錄？")) return;
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (e) { /* ignore */ }
@@ -88,7 +90,7 @@
     if (saveBtn) saveBtn.addEventListener("click", saveAnswers);
     if (clearBtn) clearBtn.addEventListener("click", clearAnswers);
 
-    // Auto-save on blur for textareas / takeaway; checkboxes save on change.
+    // Auto-save text fields on blur; checkboxes save on change.
     fields.forEach(function (key) {
       var el = $(key);
       if (!el) return;
