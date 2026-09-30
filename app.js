@@ -3,6 +3,7 @@
   "use strict";
 
   var STORAGE_KEY = "canaan-bs-eph1-oct2026";
+  var HIGHLIGHT_KEY = "canaan-bs-highlights-eph1";
   var fields = [
     "obs1", "obs2", "obs3", "obs4", "obs5",
     "exp1", "exp2", "exp3", "exp4", "exp5",
@@ -65,6 +66,131 @@
     }
   }
 
+  function isHighlightPunctuation(char) {
+    return /[，。！？；：、,.!?;:「」『』（）()【】〔〕…—-]/.test(char);
+  }
+
+  function highlightTokens(text) {
+    var tokens = [];
+    var current = "";
+
+    function pushCurrent() {
+      if (current) {
+        tokens.push({ text: current, interactive: true });
+        current = "";
+      }
+    }
+
+    for (var i = 0; i < text.length; i += 1) {
+      var char = text.charAt(i);
+      if (/\s/.test(char)) {
+        pushCurrent();
+        tokens.push({ text: char, interactive: false });
+        continue;
+      }
+      current += char;
+      var next = text.charAt(i + 1);
+      if (isHighlightPunctuation(char) ||
+          (current.length >= 8 && !isHighlightPunctuation(next))) {
+        pushCurrent();
+      }
+    }
+    pushCurrent();
+    return tokens;
+  }
+
+  function readHighlights() {
+    var saved = {};
+    try {
+      var raw = localStorage.getItem(HIGHLIGHT_KEY);
+      var ids = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(ids)) {
+        ids.forEach(function (id) { saved[id] = true; });
+      }
+    } catch (e) {
+      console.warn("readHighlights failed", e);
+    }
+    return saved;
+  }
+
+  function persistHighlights() {
+    var ids = [];
+    document.querySelectorAll(".hl-unit.highlighted").forEach(function (unit) {
+      ids.push(unit.getAttribute("data-highlight-id"));
+    });
+    try {
+      localStorage.setItem(HIGHLIGHT_KEY, JSON.stringify(ids));
+    } catch (e) {
+      showToast("標記儲存失敗（本機空間可能不足）");
+    }
+  }
+
+  function setHighlight(unit, highlighted) {
+    unit.classList.toggle("highlighted", highlighted);
+    unit.setAttribute("aria-pressed", highlighted ? "true" : "false");
+  }
+
+  function toggleHighlight(unit) {
+    setHighlight(unit, !unit.classList.contains("highlighted"));
+    persistHighlights();
+  }
+
+  function clearHighlights() {
+    document.querySelectorAll(".hl-unit.highlighted").forEach(function (unit) {
+      setHighlight(unit, false);
+    });
+    try {
+      localStorage.removeItem(HIGHLIGHT_KEY);
+    } catch (e) { /* ignore */ }
+    showToast("已清除經文標記");
+  }
+
+  function initHighlights() {
+    var scripture = document.querySelector(".scripture");
+    if (!scripture || scripture.getAttribute("data-highlight-ready") === "true") return;
+
+    var saved = readHighlights();
+    scripture.setAttribute("data-highlight-ready", "true");
+    scripture.querySelectorAll(".verse").forEach(function (verse) {
+      var verseNum = verse.querySelector(".verse-num");
+      var verseId = verseNum ? verseNum.textContent.trim() : "x";
+      var unitIndex = 0;
+      Array.prototype.slice.call(verse.childNodes).forEach(function (node) {
+        if (node.nodeType !== 3 || !node.nodeValue.trim()) return;
+        var fragment = document.createDocumentFragment();
+        highlightTokens(node.nodeValue).forEach(function (token) {
+          if (!token.interactive) {
+            fragment.appendChild(document.createTextNode(token.text));
+            return;
+          }
+          var unit = document.createElement("span");
+          var id = "v" + verseId + "-" + unitIndex;
+          unitIndex += 1;
+          unit.className = "hl-unit";
+          unit.setAttribute("data-highlight-id", id);
+          unit.setAttribute("role", "button");
+          unit.setAttribute("tabindex", "0");
+          unit.setAttribute("aria-pressed", saved[id] ? "true" : "false");
+          unit.setAttribute("aria-label", "第" + verseId + "節經文：" + token.text);
+          unit.textContent = token.text;
+          if (saved[id]) unit.classList.add("highlighted");
+          unit.addEventListener("click", function () { toggleHighlight(unit); });
+          unit.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              toggleHighlight(unit);
+            }
+          });
+          fragment.appendChild(unit);
+        });
+        node.parentNode.replaceChild(fragment, node);
+      });
+    });
+
+    var clearBtn = $("btn-clear-highlights");
+    if (clearBtn) clearBtn.addEventListener("click", clearHighlights);
+  }
+
   function clearAnswers() {
     if (!confirm("確定清除本裝置上的全部答案、微行動勾選與填寫記錄？")) return;
     try {
@@ -84,6 +210,7 @@
 
   function init() {
     loadAnswers();
+    initHighlights();
 
     var saveBtn = $("btn-save");
     var clearBtn = $("btn-clear");

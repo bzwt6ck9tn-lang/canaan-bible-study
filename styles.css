@@ -197,6 +197,55 @@ body.leader-mode .section-intro {
   font-style: normal;
 }
 
+.scripture-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.55rem;
+}
+
+.scripture-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.scripture-clear {
+  flex-shrink: 0;
+  border: 1px solid var(--accent-soft);
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  color: var(--accent);
+  background: var(--accent-light);
+  font: inherit;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+
+.scripture-clear:active {
+  transform: scale(0.97);
+}
+
+.hl-unit {
+  border-radius: 0.2em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(255, 224, 102, 0.45);
+  transition: background-color 0.12s, box-shadow 0.12s;
+}
+
+.hl-unit.highlighted {
+  background: #ffed91;
+  box-shadow: 0 0 0 0.12em #ffed91;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hl-unit:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
 .scripture-meta {
   margin-top: 0.85rem;
   font-size: 0.75rem;
