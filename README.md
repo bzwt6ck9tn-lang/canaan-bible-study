@@ -4,7 +4,7 @@
 **主題：** 神萬世以前的揀選與基業｜《十架更新，憑信同行》  
 **標記：** 示範版（無後端；答案與經文標記僅存本裝置瀏覽器 localStorage）
 
-**線上組員頁：** https://bzwt6ck9tn-lang.github.io/canaan-bible-study/member.html?v=20260930d
+**線上組員頁：** https://bzwt6ck9tn-lang.github.io/canaan-bible-study/member.html?v=20260930e
 
 ## 檔案
 
