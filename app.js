@@ -192,7 +192,7 @@
   }
 
   function clearAnswers() {
-    if (!confirm("確定清除本裝置上的全部答案、微行動勾選與填寫記錄？")) return;
+    if (!confirm("確定清除本裝置上的全部答案、本週小改變勾選與填寫記錄？")) return;
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (e) { /* ignore */ }
