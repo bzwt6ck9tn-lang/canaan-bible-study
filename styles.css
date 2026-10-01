@@ -736,3 +736,81 @@ footer.app-footer {
   color: var(--muted);
   font-size: 0.78rem;
 }
+
+/* —— Week B leader guide —— */
+.week-b .truth-line,
+.week-b .materials {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0.55rem 0;
+}
+
+.week-b .truth-line {
+  background: var(--leader-soft);
+  border-left: 3px solid var(--leader);
+  border-radius: 8px;
+  padding: 0.65rem 0.8rem;
+}
+
+.week-b-flow h3 {
+  margin: 1rem 0 0.35rem;
+  font-size: 0.95rem;
+  color: var(--leader);
+}
+
+.week-b-details {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.week-b-details details {
+  background: var(--leader-soft);
+  border: 1px solid #c5d6cb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.week-b-details summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--leader);
+  padding: 0.6rem 0.75rem;
+  list-style: none;
+  user-select: none;
+}
+
+.week-b-details summary::-webkit-details-marker { display: none; }
+
+.week-b-details summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 0.35rem;
+  font-size: 0.75rem;
+  transition: transform 0.15s;
+}
+
+.week-b-details details[open] summary::before { transform: rotate(90deg); }
+
+.week-b-details .suggested-body {
+  padding: 0 0.75rem 0.75rem;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.week-b-details .suggested-body p { margin: 0 0 0.5rem; }
+.week-b-details .suggested-body p:last-child { margin-bottom: 0; }
+.week-b-details .suggested-body ol {
+  margin: 0.25rem 0 0.5rem;
+  padding-left: 1.25rem;
+}
+.week-b-details .suggested-body li { margin-bottom: 0.3rem; }
+.week-b-details .declaration p:nth-child(2) {
+  padding: 0.6rem 0.7rem;
+  background: var(--bg-card);
+  border-radius: 8px;
+  color: var(--leader);
+  font-weight: 500;
+}
