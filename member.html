@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261001b" />
+  <link rel="stylesheet" href="styles.css?v=20261001c" />
 </head>
 <body class="member-page">
   <header class="app-header">
@@ -55,22 +55,27 @@
         <button type="button" class="scripture-clear" id="btn-clear-highlights">清除標記</button>
       </div>
       <div class="scripture">
-        <p class="verse"><span class="verse-num">1</span>奉神旨意做基督耶穌使徒的保羅，寫信給在以弗所的聖徒，就是在基督耶穌裡有忠心的人。</p>
-        <p class="verse"><span class="verse-num">2</span>願恩惠、平安從神我們的父和主耶穌基督歸於你們！</p>
-        <p class="verse"><span class="verse-num">3</span>願頌讚歸於我們主耶穌基督的父神！他在基督裡曾賜給我們天上各樣屬靈的福氣，</p>
-        <p class="verse"><span class="verse-num">4</span>就如神從創立世界以前在基督裡揀選了我們，使我們在他面前成為聖潔，無有瑕疵；</p>
-        <p class="verse"><span class="verse-num">5</span>又因愛我們，就按著自己意旨所喜悅的，預定我們藉著耶穌基督得兒子的名分，</p>
-        <p class="verse"><span class="verse-num">6</span>使他榮耀的恩典得著稱讚。這恩典是他在愛子裡所賜給我們的。</p>
-        <p class="verse"><span class="verse-num">7</span>我們藉這愛子的血得蒙救贖，過犯得以赦免，乃是照他豐富的恩典。</p>
-        <p class="verse"><span class="verse-num">8</span>這恩典是神用諸般智慧聰明，充充足足賞給我們的，</p>
-        <p class="verse"><span class="verse-num">9</span>都是照他自己所預定的美意，叫我們知道他旨意的奧祕，</p>
-        <p class="verse"><span class="verse-num">10</span>要照所安排的，在日期滿足的時候，使天上、地上一切所有的，都在基督裡面同歸於一。</p>
-        <p class="verse"><span class="verse-num">11</span>我們也在他裡面得了基業<span class="footnote">（「得」或作「成」）</span>，這原是那位隨己意行做萬事的，照著他旨意所預定的，</p>
-        <p class="verse"><span class="verse-num">12</span>叫他的榮耀從我們這首先在基督裡有盼望的人，可以得著稱讚。</p>
-        <p class="verse"><span class="verse-num">13</span>你們既聽見真理的道，就是那叫你們得救的福音，也信了基督，既然信他，就受了所應許的聖靈為印記。</p>
-        <p class="verse"><span class="verse-num">14</span>這聖靈是我們得基業的憑據<span class="footnote">（原文作「質」）</span>，直等到神之民<span class="footnote">（原文作「產業」）</span>被贖，使他的榮耀得著稱讚。</p>
+        <p class="verse" id="v1"><span class="verse-num">1</span>奉神旨意做基督耶穌使徒的保羅，寫信給在以弗所的聖徒，就是在基督耶穌裡有忠心的人。</p>
+        <p class="verse" id="v2"><span class="verse-num">2</span>願恩惠、平安從神我們的父和主耶穌基督歸於你們！</p>
+        <p class="verse" id="v3"><span class="verse-num">3</span>願頌讚歸於我們主耶穌基督的父神！他在基督裡曾賜給我們天上各樣屬靈的福氣，</p>
+        <p class="verse" id="v4"><span class="verse-num">4</span>就如神從創立世界以前在基督裡揀選了我們，使我們在他面前成為聖潔，無有瑕疵；</p>
+        <p class="verse" id="v5"><span class="verse-num">5</span>又因愛我們，就按著自己意旨所喜悅的，預定我們藉著耶穌基督得兒子的名分，</p>
+        <p class="verse" id="v6"><span class="verse-num">6</span>使他榮耀的恩典得著稱讚。這恩典是他在愛子裡所賜給我們的。</p>
+        <p class="verse" id="v7"><span class="verse-num">7</span>我們藉這愛子的血得蒙救贖，過犯得以赦免，乃是照他豐富的恩典。</p>
+        <p class="verse" id="v8"><span class="verse-num">8</span>這恩典是神用諸般智慧聰明，充充足足賞給我們的，</p>
+        <p class="verse" id="v9"><span class="verse-num">9</span>都是照他自己所預定的美意，叫我們知道他旨意的奧祕，</p>
+        <p class="verse" id="v10"><span class="verse-num">10</span>要照所安排的，在日期滿足的時候，使天上、地上一切所有的，都在基督裡面同歸於一。</p>
+        <p class="verse" id="v11"><span class="verse-num">11</span>我們也在他裡面得了基業<span class="footnote">（「得」或作「成」）</span>，這原是那位隨己意行做萬事的，照著他旨意所預定的，</p>
+        <p class="verse" id="v12"><span class="verse-num">12</span>叫他的榮耀從我們這首先在基督裡有盼望的人，可以得著稱讚。</p>
+        <p class="verse" id="v13"><span class="verse-num">13</span>你們既聽見真理的道，就是那叫你們得救的福音，也信了基督，既然信他，就受了所應許的聖靈為印記。</p>
+        <p class="verse" id="v14"><span class="verse-num">14</span>這聖靈是我們得基業的憑據<span class="footnote">（原文作「質」）</span>，直等到神之民<span class="footnote">（原文作「產業」）</span>被贖，使他的榮耀得著稱讚。</p>
       </div>
       <p class="scripture-meta">譯本：和合本（現代標點・繁體）　｜　以弗所書 1:1–14</p>
+      <div class="translation-links" aria-label="英文譯本（外連）">
+        <span class="translation-label">英文譯本（外連）</span>
+        <a href="https://www.biblegateway.com/passage/?search=Ephesians+1%3A1-14&amp;version=NIV" target="_blank" rel="noopener noreferrer">NIV（Bible Gateway）</a>
+        <a href="https://www.biblegateway.com/passage/?search=Ephesians+1%3A1-14&amp;version=ESV" target="_blank" rel="noopener noreferrer">ESV（Bible Gateway）</a>
+      </div>
     </section>
 
     <!-- 觀察 -->
@@ -98,13 +103,13 @@
 
       <div class="q-block">
         <span class="q-label">觀察 4</span>
-        <p class="q-text">1:13 前後「我們／你們」有沒有轉換？大約在哪？轉換後強調什麼？</p>
+        <p class="q-text"><a class="verse-ref" href="#v13">1:13</a> 前後「我們／你們」有沒有轉換？大約在哪？轉換後強調什麼？</p>
         <textarea id="obs4" placeholder="大約在……；轉換後強調……" rows="4"></textarea>
       </div>
 
       <div class="q-block">
         <span class="q-label">觀察 5</span>
-        <p class="q-text">按剛才的三段（弗 3–6／7–12／13–14）：各段大致以什麼收尾？各段主要強調什麼？</p>
+        <p class="q-text">按剛才的三段（弗 <a class="verse-ref" href="#v3">3–6</a>／<a class="verse-ref" href="#v7">7–12</a>／<a class="verse-ref" href="#v13">13–14</a>）：各段大致以什麼收尾？各段主要強調什麼？</p>
         <textarea id="obs5" placeholder="3–6……／7–12……／13–14……" rows="4"></textarea>
       </div>
     </section>
@@ -127,7 +132,7 @@
 
       <div class="q-block">
         <span class="q-label">解釋 3</span>
-        <p class="q-text">這裡的「奧秘」比較像「解不開的謎」，還是「如今被顯明的計劃」？1:10「同歸於一」怎樣既關乎將來，也關乎已經開始的事？（也可想想：這句如何連到整卷「在基督裡」的主旨？）</p>
+        <p class="q-text">這裡的「奧秘」比較像「解不開的謎」，還是「如今被顯明的計劃」？<a class="verse-ref" href="#v10">1:10</a>「同歸於一」怎樣既關乎將來，也關乎已經開始的事？（也可想想：這句如何連到整卷「在基督裡」的主旨？）</p>
         <textarea id="exp3" placeholder="奧秘是……；同歸於一……" rows="5"></textarea>
       </div>
 
@@ -202,6 +207,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=20261001b"></script>
+  <script src="app.js?v=20261001c"></script>
 </body>
 </html>

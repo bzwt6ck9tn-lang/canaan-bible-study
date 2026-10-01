@@ -145,6 +145,32 @@
     showToast("已清除經文標記");
   }
 
+  function flashVerseTarget(target) {
+    if (!target) return;
+    target.classList.remove("verse-target-flash");
+    // Restart the animation when the same reference is selected repeatedly.
+    void target.offsetWidth;
+    target.classList.add("verse-target-flash");
+    clearTimeout(target._verseFlashTimer);
+    target._verseFlashTimer = setTimeout(function () {
+      target.classList.remove("verse-target-flash");
+    }, 1300);
+  }
+
+  function initVerseLinks() {
+    document.querySelectorAll("a.verse-ref[href^=\"#v\"]").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var target = $(link.getAttribute("href").slice(1));
+        setTimeout(function () { flashVerseTarget(target); }, 50);
+      });
+    });
+
+    if (/^#v(?:[1-9]|1[0-4])$/.test(window.location.hash)) {
+      var initialTarget = $(window.location.hash.slice(1));
+      setTimeout(function () { flashVerseTarget(initialTarget); }, 100);
+    }
+  }
+
   function initHighlights() {
     var scripture = document.querySelector(".scripture");
     if (!scripture || scripture.getAttribute("data-highlight-ready") === "true") return;
@@ -210,6 +236,7 @@
 
   function init() {
     loadAnswers();
+    initVerseLinks();
     initHighlights();
 
     var saveBtn = $("btn-save");

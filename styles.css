@@ -183,6 +183,17 @@ body.leader-mode .section-intro {
 .verse {
   margin: 0 0 0.55rem;
   padding-left: 0.15rem;
+  scroll-margin-top: calc(3.5rem + var(--safe-top));
+}
+
+.verse-target-flash {
+  animation: verse-target-flash 1.25s ease-out;
+  border-radius: 0.35rem;
+}
+
+@keyframes verse-target-flash {
+  0%, 55% { background: #fff0a8; }
+  100% { background: transparent; }
 }
 
 .verse-num {
@@ -254,6 +265,43 @@ body.leader-mode .section-intro {
   color: var(--muted);
   border-top: 1px dashed var(--border);
   padding-top: 0.6rem;
+}
+
+.translation-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+  margin-top: 0.55rem;
+  font-size: 0.8rem;
+}
+
+.translation-label {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.translation-links a,
+.verse-ref {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.translation-links a {
+  white-space: nowrap;
+}
+
+.translation-links a:hover,
+.translation-links a:focus-visible,
+.verse-ref:hover,
+.verse-ref:focus-visible {
+  color: var(--focus);
+}
+
+body.leader-mode .verse-ref {
+  color: var(--leader);
 }
 
 /* —— Questions —— */
