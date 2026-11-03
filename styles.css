@@ -881,3 +881,53 @@ footer.app-footer {
   color: var(--leader);
   font-weight: 500;
 }
+
+/* —— Month selector (multi-month, 2026-11) —— */
+.month-bar {
+  position: sticky;
+  top: 0;
+  z-index: 120;
+  background: #3d2f22;
+  color: #fff;
+  padding: calc(0.45rem + var(--safe-top)) 1rem 0.45rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.month-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+  min-height: 2.1rem;
+}
+.month-current { font-size: 0.92rem; line-height: 1.35; }
+.month-current strong { color: #ffd98a; font-weight: 700; }
+.month-select-wrap select {
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #ffd98a;
+  background: #fffaf0;
+  color: #3d2f22;
+  font-weight: 700;
+  max-width: 100%;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.month-panel[hidden] { display: none !important; }
+body .nav-chips { top: var(--month-bar-h, 3rem); }
+body .section, body .part-divider, body .verse { scroll-margin-top: calc(var(--month-bar-h, 3rem) + 3.5rem + var(--safe-top)); }
+.nav-note { flex: none; align-self: center; font-size: 0.78rem; color: #9a8f84; padding: 0 0.4rem; white-space: nowrap; }
+.justify p, .justify li, .section-intro, .q-text, .suggested-body p { text-align: justify; text-justify: inter-character; }
+.part-divider { max-width: 720px; margin: 1.5rem auto 0.75rem; font-size: 1.15rem; color: #7a4b1e; border-left: 4px solid #c58b3c; padding-left: 0.6rem; }
+.sub-title { font-size: 1.02rem; margin: 1.1rem 0 0.4rem; color: #5a3d22; }
+.nov-list { padding-left: 1.4rem; margin: 0.4rem 0 0.8rem; }
+.nov-list li { margin-bottom: 0.4rem; }
+.table-wrap { overflow-x: auto; margin: 0.5rem 0 0.9rem; }
+.scripture-en .verse-en { margin: 0 0 0.35rem; font-size: 0.95rem; text-align: left; }
+.copyright { font-size: 0.78rem; }
+.nov-field textarea { width: 100%; }
+@media (max-width: 480px) { .month-current { font-size: 0.85rem; width: 100%; } .month-select-wrap { width: 100%; } .month-select-wrap select { width: 100%; } }
+@media print { .month-bar { display: none; } }

@@ -1,21 +1,12 @@
-/* 迦南團契｜十月查經｜組員／組長分頁共用儲存 */
+/* 迦南團契｜每月查經｜組員／組長分頁共用儲存（多月份） */
 (function () {
   "use strict";
+  // 每個 .month-panel 有自己的 data-store／data-hl 鍵；十月沿用原有鍵（canaan-bs-eph1-oct2026／canaan-bs-highlights-eph1），舊答案不受影響。
+  var DEFAULT_MONTH = "2026-11";
+  var panels = [];
+  var active = null;
 
-  var STORAGE_KEY = "canaan-bs-eph1-oct2026";
-  var HIGHLIGHT_KEY = "canaan-bs-highlights-eph1";
-  var fields = [
-    "obs1", "obs2", "obs3", "obs4", "obs5",
-    "exp1", "exp2", "exp3", "exp4", "exp5",
-    "takeaway",
-    "micro1", "micro1Notes",
-    "micro2", "micro2Notes",
-    "micro3", "micro3Notes"
-  ];
-
-  function $(id) {
-    return document.getElementById(id);
-  }
+  function $(id) { return document.getElementById(id); }
 
   function showToast(msg) {
     var t = $("toast");
@@ -23,47 +14,49 @@
     t.textContent = msg;
     t.classList.add("show");
     clearTimeout(showToast._timer);
-    showToast._timer = setTimeout(function () {
-      t.classList.remove("show");
-    }, 2200);
+    showToast._timer = setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
 
-  function loadAnswers() {
+  function fieldsOf(panel) {
+    return Array.prototype.slice.call(panel.querySelectorAll("textarea[id], input[id]"));
+  }
+
+  function loadAnswers(panel) {
     try {
-      var raw = localStorage.getItem(STORAGE_KEY);
+      var raw = localStorage.getItem(panel.getAttribute("data-store"));
       if (!raw) return;
       var data = JSON.parse(raw);
-      fields.forEach(function (key) {
-        var el = $(key);
-        if (!el) return;
-        if (el.type === "checkbox") {
-          el.checked = !!data[key];
-        } else if (typeof data[key] === "string") {
-          el.value = data[key];
-        }
+      fieldsOf(panel).forEach(function (el) {
+        if (el.type === "checkbox") el.checked = !!data[el.id];
+        else if (typeof data[el.id] === "string") el.value = data[el.id];
       });
-    } catch (e) {
-      console.warn("loadAnswers failed", e);
-    }
+    } catch (e) { console.warn("loadAnswers failed", e); }
   }
 
-  function collectAnswers() {
-    var data = { savedAt: new Date().toISOString() };
-    fields.forEach(function (key) {
-      var el = $(key);
-      if (!el) return;
-      data[key] = el.type === "checkbox" ? el.checked : el.value;
+  function storeAnswers(panel) {
+    var key = panel.getAttribute("data-store");
+    var data = {};
+    try { data = JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { data = {}; }
+    data.savedAt = new Date().toISOString();
+    fieldsOf(panel).forEach(function (el) {
+      data[el.id] = el.type === "checkbox" ? el.checked : el.value;
     });
-    return data;
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
   function saveAnswers() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(collectAnswers()));
-      showToast("已儲存到本裝置");
-    } catch (e) {
-      showToast("儲存失敗（本機空間可能不足）");
-    }
+    try { storeAnswers(active); showToast("已儲存到本裝置（" + active.getAttribute("data-label").split("｜")[0] + "）"); }
+    catch (e) { showToast("儲存失敗（本機空間可能不足）"); }
+  }
+
+  function clearAnswers() {
+    var name = active.getAttribute("data-label").split("｜")[0];
+    if (!confirm("確定清除本裝置上「" + name + "」的全部答案、本週小改變勾選與填寫記錄？（其他月份不受影響）")) return;
+    try { localStorage.removeItem(active.getAttribute("data-store")); } catch (e) { /* ignore */ }
+    fieldsOf(active).forEach(function (el) {
+      if (el.type === "checkbox") el.checked = false; else el.value = "";
+    });
+    showToast("已清除" + name + "答案");
   }
 
   function isHighlightPunctuation(char) {
@@ -71,112 +64,42 @@
   }
 
   function highlightTokens(text) {
-    var tokens = [];
-    var current = "";
-
+    var tokens = [], current = "";
     function pushCurrent() {
-      if (current) {
-        tokens.push({ text: current, interactive: true });
-        current = "";
-      }
+      if (current) { tokens.push({ text: current, interactive: true }); current = ""; }
     }
-
     for (var i = 0; i < text.length; i += 1) {
       var char = text.charAt(i);
-      if (/\s/.test(char)) {
-        pushCurrent();
-        tokens.push({ text: char, interactive: false });
-        continue;
-      }
+      if (/\s/.test(char)) { pushCurrent(); tokens.push({ text: char, interactive: false }); continue; }
       current += char;
       var next = text.charAt(i + 1);
-      if (isHighlightPunctuation(char) ||
-          (current.length >= 8 && !isHighlightPunctuation(next))) {
-        pushCurrent();
-      }
+      if (isHighlightPunctuation(char) || (current.length >= 8 && !isHighlightPunctuation(next))) pushCurrent();
     }
     pushCurrent();
     return tokens;
   }
 
-  function readHighlights() {
+  function initHighlights(panel) {
+    var key = panel.getAttribute("data-hl");
+    var scripture = panel.querySelector(".scripture");
+    if (!scripture) return;
     var saved = {};
     try {
-      var raw = localStorage.getItem(HIGHLIGHT_KEY);
-      var ids = raw ? JSON.parse(raw) : [];
-      if (Array.isArray(ids)) {
-        ids.forEach(function (id) { saved[id] = true; });
-      }
-    } catch (e) {
-      console.warn("readHighlights failed", e);
-    }
-    return saved;
-  }
-
-  function persistHighlights() {
-    var ids = [];
-    document.querySelectorAll(".hl-unit.highlighted").forEach(function (unit) {
-      ids.push(unit.getAttribute("data-highlight-id"));
-    });
-    try {
-      localStorage.setItem(HIGHLIGHT_KEY, JSON.stringify(ids));
-    } catch (e) {
-      showToast("標記儲存失敗（本機空間可能不足）");
-    }
-  }
-
-  function setHighlight(unit, highlighted) {
-    unit.classList.toggle("highlighted", highlighted);
-    unit.setAttribute("aria-pressed", highlighted ? "true" : "false");
-  }
-
-  function toggleHighlight(unit) {
-    setHighlight(unit, !unit.classList.contains("highlighted"));
-    persistHighlights();
-  }
-
-  function clearHighlights() {
-    document.querySelectorAll(".hl-unit.highlighted").forEach(function (unit) {
-      setHighlight(unit, false);
-    });
-    try {
-      localStorage.removeItem(HIGHLIGHT_KEY);
+      var ids = JSON.parse(localStorage.getItem(key) || "[]");
+      if (Array.isArray(ids)) ids.forEach(function (id) { saved[id] = true; });
     } catch (e) { /* ignore */ }
-    showToast("已清除經文標記");
-  }
 
-  function flashVerseTarget(target) {
-    if (!target) return;
-    target.classList.remove("verse-target-flash");
-    // Restart the animation when the same reference is selected repeatedly.
-    void target.offsetWidth;
-    target.classList.add("verse-target-flash");
-    clearTimeout(target._verseFlashTimer);
-    target._verseFlashTimer = setTimeout(function () {
-      target.classList.remove("verse-target-flash");
-    }, 1300);
-  }
-
-  function initVerseLinks() {
-    document.querySelectorAll("a.verse-ref[href^=\"#v\"]").forEach(function (link) {
-      link.addEventListener("click", function () {
-        var target = $(link.getAttribute("href").slice(1));
-        setTimeout(function () { flashVerseTarget(target); }, 50);
-      });
-    });
-
-    if (/^#v(?:[1-9]|1[0-4])$/.test(window.location.hash)) {
-      var initialTarget = $(window.location.hash.slice(1));
-      setTimeout(function () { flashVerseTarget(initialTarget); }, 100);
+    function persist() {
+      var ids = [];
+      scripture.querySelectorAll(".hl-unit.highlighted").forEach(function (u) { ids.push(u.getAttribute("data-highlight-id")); });
+      try { localStorage.setItem(key, JSON.stringify(ids)); } catch (e) { showToast("標記儲存失敗（本機空間可能不足）"); }
     }
-  }
+    function setHl(unit, on) {
+      unit.classList.toggle("highlighted", on);
+      unit.setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    function toggle(unit) { setHl(unit, !unit.classList.contains("highlighted")); persist(); }
 
-  function initHighlights() {
-    var scripture = document.querySelector(".scripture");
-    if (!scripture || scripture.getAttribute("data-highlight-ready") === "true") return;
-
-    var saved = readHighlights();
-    scripture.setAttribute("data-highlight-ready", "true");
     scripture.querySelectorAll(".verse").forEach(function (verse) {
       var verseNum = verse.querySelector(".verse-num");
       var verseId = verseNum ? verseNum.textContent.trim() : "x";
@@ -185,10 +108,7 @@
         if (node.nodeType !== 3 || !node.nodeValue.trim()) return;
         var fragment = document.createDocumentFragment();
         highlightTokens(node.nodeValue).forEach(function (token) {
-          if (!token.interactive) {
-            fragment.appendChild(document.createTextNode(token.text));
-            return;
-          }
+          if (!token.interactive) { fragment.appendChild(document.createTextNode(token.text)); return; }
           var unit = document.createElement("span");
           var id = "v" + verseId + "-" + unitIndex;
           unitIndex += 1;
@@ -200,12 +120,9 @@
           unit.setAttribute("aria-label", "第" + verseId + "節經文：" + token.text);
           unit.textContent = token.text;
           if (saved[id]) unit.classList.add("highlighted");
-          unit.addEventListener("click", function () { toggleHighlight(unit); });
-          unit.addEventListener("keydown", function (event) {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              toggleHighlight(unit);
-            }
+          unit.addEventListener("click", function () { toggle(unit); });
+          unit.addEventListener("keydown", function (ev) {
+            if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); toggle(unit); }
           });
           fragment.appendChild(unit);
         });
@@ -213,60 +130,108 @@
       });
     });
 
-    var clearBtn = $("btn-clear-highlights");
-    if (clearBtn) clearBtn.addEventListener("click", clearHighlights);
+    panel.querySelectorAll(".scripture-clear").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        scripture.querySelectorAll(".hl-unit.highlighted").forEach(function (u) { setHl(u, false); });
+        try { localStorage.removeItem(key); } catch (e) { /* ignore */ }
+        showToast("已清除經文標記");
+      });
+    });
   }
 
-  function clearAnswers() {
-    if (!confirm("確定清除本裝置上的全部答案、本週小改變勾選與填寫記錄？")) return;
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch (e) { /* ignore */ }
-    fields.forEach(function (key) {
-      var el = $(key);
-      if (!el) return;
-      if (el.type === "checkbox") {
-        el.checked = false;
-      } else {
-        el.value = "";
-      }
+  function flashVerseTarget(target) {
+    if (!target) return;
+    target.classList.remove("verse-target-flash");
+    void target.offsetWidth;
+    target.classList.add("verse-target-flash");
+    clearTimeout(target._verseFlashTimer);
+    target._verseFlashTimer = setTimeout(function () { target.classList.remove("verse-target-flash"); }, 1300);
+  }
+
+  function initVerseLinks(panel) {
+    panel.querySelectorAll("a.verse-ref[href^=\"#\"]").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var target = $(link.getAttribute("href").slice(1));
+        setTimeout(function () { flashVerseTarget(target); }, 50);
+      });
     });
-    showToast("已清除");
+  }
+
+  function bindAutosave(panel) {
+    fieldsOf(panel).forEach(function (el) {
+      el.addEventListener(el.type === "checkbox" ? "change" : "blur", function () {
+        try { storeAnswers(panel); } catch (e) { /* ignore */ }
+      });
+    });
+  }
+
+  function findPanel(month) {
+    for (var i = 0; i < panels.length; i += 1) if (panels[i].getAttribute("data-month") === month) return panels[i];
+    return null;
+  }
+
+  function monthFromUrl() {
+    var m = null;
+    var q = /[?&]m=(\d{4}-\d{2})/.exec(window.location.search);
+    if (q) m = q[1];
+    var h = /[#&]m=(\d{4}-\d{2})/.exec(window.location.hash);
+    if (h) m = h[1];
+    if (!m && window.location.hash) {
+      // 舊連結（如 #v3、#sec-obs）屬於十月頁面
+      var el = $(window.location.hash.slice(1));
+      var p = el && el.closest ? el.closest(".month-panel") : null;
+      if (p) m = p.getAttribute("data-month");
+    }
+    return m && findPanel(m) ? m : DEFAULT_MONTH;
+  }
+
+  function showMonth(month, updateUrl) {
+    var panel = findPanel(month) || findPanel(DEFAULT_MONTH);
+    panels.forEach(function (p) { p.hidden = p !== panel; });
+    active = panel;
+    var label = $("month-current-label");
+    if (label) label.textContent = panel.getAttribute("data-label");
+    var sel = $("month-select");
+    if (sel) sel.value = panel.getAttribute("data-month");
+    document.body.setAttribute("data-month", panel.getAttribute("data-month"));
+    if (updateUrl && window.history && history.replaceState) {
+      var url = window.location.pathname + "?m=" + panel.getAttribute("data-month");
+      history.replaceState(null, "", url);
+    }
   }
 
   function init() {
-    loadAnswers();
-    initVerseLinks();
-    initHighlights();
+    panels = Array.prototype.slice.call(document.querySelectorAll(".month-panel"));
+    panels.forEach(function (p) {
+      loadAnswers(p);
+      initVerseLinks(p);
+      initHighlights(p);
+      bindAutosave(p);
+    });
+    showMonth(monthFromUrl(), false);
+    var bar = document.querySelector(".month-bar");
+    function setBarH() { if (bar) document.documentElement.style.setProperty("--month-bar-h", bar.offsetHeight + "px"); }
+    setBarH();
+    window.addEventListener("resize", setBarH);
 
-    var saveBtn = $("btn-save");
-    var clearBtn = $("btn-clear");
+    var sel = $("month-select");
+    if (sel) sel.addEventListener("change", function () {
+      if (active) { try { storeAnswers(active); } catch (e) { /* ignore */ } }
+      showMonth(sel.value, true);
+      window.scrollTo(0, 0);
+    });
+
+    var hash = window.location.hash;
+    if (hash && /^#[A-Za-z]/.test(hash) && !/^#m=/.test(hash)) {
+      var t = $(hash.slice(1));
+      if (t) setTimeout(function () { t.scrollIntoView(); if (t.classList.contains("verse")) flashVerseTarget(t); }, 120);
+    }
+
+    var saveBtn = $("btn-save"), clearBtn = $("btn-clear");
     if (saveBtn) saveBtn.addEventListener("click", saveAnswers);
     if (clearBtn) clearBtn.addEventListener("click", clearAnswers);
-
-    // Auto-save text fields on blur; checkboxes save on change.
-    fields.forEach(function (key) {
-      var el = $(key);
-      if (!el) return;
-      if (el.type === "checkbox") {
-        el.addEventListener("change", function () {
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(collectAnswers()));
-          } catch (e) { /* ignore */ }
-        });
-      } else {
-        el.addEventListener("blur", function () {
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(collectAnswers()));
-          } catch (e) { /* ignore */ }
-        });
-      }
-    });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
