@@ -943,3 +943,20 @@ body .section, body .part-divider, body .verse { scroll-margin-top: calc(var(--m
 .scripture-b { margin: 0.5rem 0; padding: 0.7rem 0.9rem; background: #fbf6ee; border-radius: 8px; line-height: 1.8; text-align: justify; }
 .scripture-b-en { font-size: 0.95rem; text-align: left; }
 .week-b .q-label:empty { display: none; }
+
+/* 主頁：選月份 → 選週會（2026-11-03c） */
+.home-screen[hidden], .home-view[hidden] { display: none !important; }
+.home-main { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 2rem; }
+.home-choices { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.6rem; }
+.home-choice { display: block; text-decoration: none; background: #fff; border: 2px solid #c58b3c; border-radius: 14px; padding: 1.05rem 1.1rem; color: #3b2a1a; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.home-choice strong { display: block; font-size: 1.15rem; }
+.home-choice span { display: block; margin-top: 0.25rem; font-size: 0.9rem; color: #7a6a5a; }
+.home-choice:active, .home-choice:hover { background: #fff7e6; }
+.home-back { display: inline-block; margin-bottom: 0.5rem; color: #7a4b1e; font-weight: 700; text-decoration: none; }
+.home-btn { flex: none; color: #3d2f22; background: #ffd98a; border-radius: 999px; padding: 0.3rem 0.8rem; font-weight: 700; text-decoration: none; font-size: 0.92rem; }
+.week-switch { flex: none; display: inline-flex; border: 1px solid #ffd98a; border-radius: 999px; overflow: hidden; }
+.week-btn { color: #ffd98a; text-decoration: none; padding: 0.25rem 0.75rem; font-size: 0.88rem; font-weight: 700; }
+.week-btn.active { background: #ffd98a; color: #3d2f22; }
+body.on-home .month-bar, body.on-home .action-bar { display: none !important; }
+.wk-hidden { display: none !important; }
+@media (max-width: 480px) { .month-bar-inner .month-current { width: auto; flex: 1 1 100%; order: 3; } }

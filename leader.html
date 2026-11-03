@@ -9,17 +9,39 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261103b" />
+  <link rel="stylesheet" href="styles.css?v=20261103c" />
 </head>
 <body class="leader-page leader-mode">
-  <div class="month-bar" role="region" aria-label="月份選擇">
+  <div class="month-bar" role="region" aria-label="目前顯示">
     <div class="month-bar-inner">
-      <span class="month-current">目前顯示：<strong id="month-current-label">十一月｜以弗所書 2:1–10（A週＋B週）</strong></span>
-      <label class="month-select-wrap"><span class="sr-only">選擇月份</span>
-        <select id="month-select" aria-label="選擇月份"><option value="2026-11">十一月｜弗 2:1–10</option><option value="2026-10">十月｜弗 1:1–14</option></select></label>
+      <a class="home-btn" id="btn-home" href="?">← 主頁</a>
+      <span class="month-current">目前顯示：<strong id="month-current-label"></strong></span>
+      <div class="week-switch" role="group" aria-label="切換週會"><a class="week-btn" data-w="A" href="#">A週</a><a class="week-btn" data-w="B" href="#">B週</a></div>
     </div>
   </div>
-  <div class="month-panel" data-month="2026-11" data-label="十一月｜以弗所書 2:1–10（A週＋B週）" data-store="canaan-bs-eph2-nov2026" data-hl="canaan-bs-highlights-eph2-nov2026" data-vprefix="n-v">
+  <div class="home-screen" id="home-screen" hidden>
+    <header class="app-header"><div class="header-inner">
+      <span class="badge-demo">組長版</span>
+      <h1 class="app-title">迦南團契查經｜2026–2027《十架更新，憑信同行》</h1>
+      <p class="app-subtitle">組長版｜先選月份，再選週會</p>
+    </div></header>
+    <main class="home-main">
+      <section class="home-view" id="home-months">
+        <h2 class="section-title">選擇月份</h2>
+        <div class="home-choices"><a class="home-choice" data-goto-month="2026-11" href="?m=2026-11"><strong>十一月｜以弗所書 2:1–10</strong></a><a class="home-choice" data-goto-month="2026-10" href="?m=2026-10"><strong>十月｜以弗所書 1:1–14</strong></a></div>
+      </section>
+      <section class="home-view" id="home-weeks" hidden>
+        <a class="home-back" id="home-back" href="?">← 返回月份</a>
+        <h2 class="section-title" id="home-weeks-title"></h2>
+        <div class="home-choices">
+          <a class="home-choice" id="home-week-A" href="#"><strong>A週｜查經</strong><span>真理扎根</span></a>
+          <a class="home-choice" id="home-week-B" href="#"><strong>B週｜生命同行</strong><span>生活回應、二人分享與代禱</span></a>
+        </div>
+      </section>
+      <p class="hub-footer">答案只儲存在此裝置的瀏覽器。</p>
+    </main>
+  </div>
+  <div class="month-panel" data-month="2026-11" data-label="十一月｜以弗所書 2:1–10" data-store="canaan-bs-eph2-nov2026" data-hl="canaan-bs-highlights-eph2-nov2026" data-vprefix="n-v">
   <header class="app-header">
     <div class="header-inner">
       <span class="badge-demo">組長頁</span>
@@ -530,6 +552,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=20261103b"></script>
+  <script src="app.js?v=20261103c"></script>
 </body>
 </html>
