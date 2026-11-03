@@ -960,3 +960,36 @@ body .section, body .part-divider, body .verse { scroll-margin-top: calc(var(--m
 body.on-home .month-bar, body.on-home .action-bar { display: none !important; }
 .wk-hidden { display: none !important; }
 @media (max-width: 480px) { .month-bar-inner .month-current { width: auto; flex: 1 1 100%; order: 3; } }
+
+/* 組長版：綠色系（只作用於 body.leader-mode；團友頁維持啡色） */
+body.leader-mode {
+  --accent: #3d5a4c; --accent-soft: #8fb3a0; --accent-light: #e8f0eb;
+  --leader-border: #8fb3a0; --leader-pale: #f2f7f4;
+}
+body.leader-mode .month-bar { background: #2f4a3d; }
+body.leader-mode .month-current strong { color: #d4f0df; }
+body.leader-mode .home-btn { background: #d4f0df; color: #23382e; }
+body.leader-mode .week-switch { border-color: #d4f0df; }
+body.leader-mode .week-btn { color: #d4f0df; }
+body.leader-mode .week-btn.active { background: #d4f0df; color: #23382e; }
+body.leader-mode .nav-week, body.leader-mode .nav-chips a.nav-week-link { background: var(--leader); color: #fff; }
+body.leader-mode .nav-chips a { border-color: var(--leader-border); }
+body.leader-mode .part-divider { color: var(--leader); border-left-color: var(--leader-border); }
+body.leader-mode .week-b-divider { color: var(--leader); border-left-color: var(--leader); }
+body.leader-mode .sub-title { color: #2f4a3d; }
+body.leader-mode .fixed-question { background: var(--leader-pale); border-color: var(--leader-border); }
+body.leader-mode .fixed-question-label { color: var(--leader); }
+body.leader-mode .fixed-question-text { color: #23382e; }
+body.leader-mode .b-quote { border-left-color: var(--leader-border); background: var(--leader-pale); }
+body.leader-mode .scripture-b { background: var(--leader-pale); }
+body.leader-mode .home-choice { border-color: var(--leader-border); color: #23382e; }
+body.leader-mode .home-choice span { color: #5a6e63; }
+body.leader-mode .home-choice:active, body.leader-mode .home-choice:hover { background: var(--leader-soft); }
+body.leader-mode .home-back { color: var(--leader); }
+body.leader-mode .badge-demo { background: var(--leader-soft); color: var(--leader); }
+body.leader-mode .home-screen .app-title { color: #23382e; }
+body.leader-mode .bar-edition { display: inline-block; margin-right: 0.3rem; padding: 0 0.45rem; border-radius: 999px; background: #d4f0df; color: #23382e; font-weight: 700; font-size: 0.8rem; }
+.member-page .bar-edition { display: none; }
+body.leader-mode .home-screen .app-header { background: var(--leader-soft); border-bottom: 3px solid var(--leader); }
+body.leader-mode .home-screen .badge-demo { background: var(--leader); color: #fff; }
+body.leader-mode .home-main .section-title { color: var(--leader); }
