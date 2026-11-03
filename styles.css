@@ -993,3 +993,7 @@ body.leader-mode .bar-edition { display: inline-block; margin-right: 0.3rem; pad
 body.leader-mode .home-screen .app-header { background: var(--leader-soft); border-bottom: 3px solid var(--leader); }
 body.leader-mode .home-screen .badge-demo { background: var(--leader); color: #fff; }
 body.leader-mode .home-main .section-title { color: var(--leader); }
+
+/* 團友版：不用綠色，全部用啡色 */
+body.member-page { --leader: var(--accent); --leader-soft: var(--accent-light); }
+body.member-page .week-b-divider { border-left-color: var(--accent); color: var(--accent); }
