@@ -931,3 +931,15 @@ body .section, body .part-divider, body .verse { scroll-margin-top: calc(var(--m
 .nov-field textarea { width: 100%; }
 @media (max-width: 480px) { .month-current { font-size: 0.85rem; width: 100%; } .month-select-wrap { width: 100%; } .month-select-wrap select { width: 100%; } }
 @media print { .month-bar { display: none; } }
+
+/* 十一月 B 週（生命同行） */
+.nav-week { flex: none; align-self: center; font-size: 0.78rem; font-weight: 700; color: #fff; background: #7a4b1e; border-radius: 999px; padding: 0.15rem 0.55rem; white-space: nowrap; }
+.nav-chips a.nav-week-link { background: #7a4b1e; color: #fff; font-weight: 700; }
+.week-b-divider { border-left-color: #2f6f5e; color: #2f6f5e; }
+.fixed-question { max-width: 720px; margin: 0.5rem auto 1rem; background: #fff7e6; border: 2px solid #c58b3c; border-radius: 12px; padding: 0.9rem 1rem; }
+.fixed-question-label { margin: 0 0 0.35rem; font-size: 0.85rem; font-weight: 700; color: #7a4b1e; }
+.fixed-question-text { margin: 0; font-size: 1.12rem; font-weight: 700; line-height: 1.6; text-align: justify; color: #3b2a1a; }
+.b-quote { margin: 0.6rem 0; padding: 0.55rem 0.85rem; border-left: 4px solid #c58b3c; background: #fbf6ee; border-radius: 0 8px 8px 0; text-align: justify; }
+.scripture-b { margin: 0.5rem 0; padding: 0.7rem 0.9rem; background: #fbf6ee; border-radius: 8px; line-height: 1.8; text-align: justify; }
+.scripture-b-en { font-size: 0.95rem; text-align: left; }
+.week-b .q-label:empty { display: none; }
