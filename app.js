@@ -171,7 +171,7 @@
 
   var WEEK_NAME = { A: "A週 查經", B: "B週 生命同行" };
   // 每月共用的經文段落（B 週的經文跳轉連結指向這裡），兩週都顯示
-  var SHARED_IDS = { "n-sec-1": true, "sec-scripture": true };
+  var SHARED_IDS = { "n-sec-1": true, "sec-scripture": true, "d-sec-1": true };
 
   // 把 <main> 的每個直接子元素標記為 A／B／both
   function tagWeeks(panel) {
@@ -184,8 +184,8 @@
       if (el.tagName === "NAV" || el.tagName === "FOOTER") tag = "both";
       else if (SHARED_IDS[id]) tag = "both";
       else {
-        if (id === "nb") seenB = true;
-        tag = (seenB || /^nb-/.test(id) || /^sec-week-b/.test(id)) ? "B" : "A";
+        if (id === "nb" || id === "db") seenB = true;
+        tag = (seenB || /^nb-/.test(id) || /^db-/.test(id) || /^sec-week-b/.test(id)) ? "B" : "A";
       }
       el.setAttribute("data-week", tag);
     });
